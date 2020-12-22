@@ -32,7 +32,7 @@ class FileController(object):
             with open(file, "r", encoding="utf-8") as f:
                 yaml.safe_load(f)
             return True
-        except Exception as _:
+        except yaml.YAMLError as _:
             return False
 
     def __is_json(self, file: str) -> bool:
@@ -40,7 +40,7 @@ class FileController(object):
             with open(file, "r", encoding="utf-8") as f:
                 json.loads(f)
             return True
-        except Exception as _:
+        except json.JSONDecodeError as _:
             return False
 
     def __load_yaml(self, file: str) -> OrderedDict:
