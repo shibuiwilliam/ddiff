@@ -2,6 +2,12 @@ from typing import Tuple
 from collections import OrderedDict, Counter
 
 
+def format_print(*args):
+    for a in args:
+        print(a)
+    print("----------")
+
+
 def data_diff(
     file_data_0: Tuple[str, OrderedDict],
     file_data_1: Tuple[str, OrderedDict],
@@ -16,33 +22,29 @@ def data_diff(
         path = f"{original_path}.{key}"
         if isinstance(value, OrderedDict):
             if key not in data_1.keys():
-                print(f"{file_0} + {path}")
-                print(f"{file_1} - {path}")
-                print("-------------")
+                format_print(f"{file_0} + {path}", f"{file_1} - {path}")
             else:
                 data_diff((file_0, data_0[key]), (file_1, data_1[key]), path)
         elif isinstance(value, list):
             if key not in data_1.keys():
-                print(f"{file_0} + {path}")
-                print(f"{file_1} - {path}")
-                print("-------------")
+                format_print(f"{file_0} + {path}", f"{file_1} - {path}")
             else:
                 if isinstance(data_1[key], list):
                     counted_0 = Counter(value)
                     counted_1 = Counter(data_1[key])
                     if counted_0 != counted_1:
-                        print(f"{path}:")
-                        print(f"\t{file_0}: {data_0[key]}")
-                        print(f"\t{file_1}: {data_1[key]}")
-                        print("-------------")
+                        format_print(
+                            f"{path}:",
+                            f"\t{file_0}: {data_0[key]}",
+                            f"\t{file_1}: {data_1[key]}",
+                        )
         else:
             if key not in data_1.keys():
-                print(f"{file_0} + {path}")
-                print(f"{file_1} - {path}")
-                print("-------------")
+                format_print(f"{file_0} + {path}", f"{file_1} - {path}")
             else:
                 if data_0[key] != data_1[key]:
-                    print(f"{path}:")
-                    print(f"\t{file_0}: {data_0[key]}")
-                    print(f"\t{file_1}: {data_1[key]}")
-                    print("-------------")
+                    format_print(
+                        f"{path}:",
+                        f"\t{file_0}: {data_0[key]}",
+                        f"\t{file_1}: {data_1[key]}",
+                    )
