@@ -13,16 +13,19 @@ def data_diff(
     data_1 = file_data_1[1]
     original_path = path
     for key, value in data_0.items():
-        if original_path == "":
-            path = f"{key}"
-        else:
-            path = f"{original_path}.{key}"
+        path = f"{original_path}.{key}"
         if isinstance(value, OrderedDict):
-            data_diff((file_0, data_0[key]), (file_1, data_1[key]), path)
+            if key not in data_1.keys():
+                print(f"{file_0} + {path}")
+                print(f"{file_1} - {path}")
+                print("-------------")
+            else:
+                data_diff((file_0, data_0[key]), (file_1, data_1[key]), path)
         elif isinstance(value, list):
             if key not in data_1.keys():
                 print(f"{file_0} + {path}")
                 print(f"{file_1} - {path}")
+                print("-------------")
             else:
                 if isinstance(data_1[key], list):
                     counted_0 = Counter(value)
@@ -31,12 +34,15 @@ def data_diff(
                         print(f"{path}:")
                         print(f"\t{file_0}: {data_0[key]}")
                         print(f"\t{file_1}: {data_1[key]}")
+                        print("-------------")
         else:
             if key not in data_1.keys():
                 print(f"{file_0} + {path}")
                 print(f"{file_1} - {path}")
+                print("-------------")
             else:
                 if data_0[key] != data_1[key]:
                     print(f"{path}:")
                     print(f"\t{file_0}: {data_0[key]}")
                     print(f"\t{file_1}: {data_1[key]}")
+                    print("-------------")
