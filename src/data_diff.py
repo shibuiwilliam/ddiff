@@ -1,6 +1,6 @@
-from typing import Tuple, List, Any
-from collections import OrderedDict, Counter
+from collections import Counter, OrderedDict
 from enum import Enum
+from typing import Any, List, Tuple
 
 
 def format_print(*args):
@@ -17,9 +17,15 @@ class DIFFERENCE(Enum):
     KEY_NOT_IN_FILE_1 = "key not in file_1"
 
 
-class DifferentTypes(object):
-    def __init__(self, path: str, file_0_value: Any, file_1_value: Any, file_0_type: str, file_1_type: str):
+class AbstractDifference(object):
+    def __init__(self, path: str):
         self.path = path
+        self.status: DIFFERENCE
+
+
+class DifferentTypes(AbstractDifference):
+    def __init__(self, path: str, file_0_value: Any, file_1_value: Any, file_0_type: str, file_1_type: str):
+        super().__init__(path=path)
         self.file_0_value = file_0_value
         self.file_1_value = file_1_value
         self.file_0_type = file_0_type
@@ -27,32 +33,32 @@ class DifferentTypes(object):
         self.status = DIFFERENCE.DIFFERENT_TYPES
 
 
-class DifferentValues(object):
+class DifferentValues(AbstractDifference):
     def __init__(self, path: str, file_0_value: Any, file_1_value: Any):
-        self.path = path
+        super().__init__(path=path)
         self.file_0_value = file_0_value
         self.file_1_value = file_1_value
         self.status = DIFFERENCE.DIFFERENT_VALUES
 
 
-class ArrayInDifferentSequence(object):
+class ArrayInDifferentSequence(AbstractDifference):
     def __init__(self, path: str, file_0_array: List[Any], file_1_array: List[Any]):
-        self.path = path
+        super().__init__(path=path)
         self.file_0_array = file_0_array
         self.file_1_array = file_1_array
         self.status = DIFFERENCE.ARRAY_IN_DIFFERENT_SEQUENCE
 
 
-class KeyNotInFile0(object):
+class KeyNotInFile0(AbstractDifference):
     def __init__(self, path: str, file_1_value: Any):
-        self.path = path
+        super().__init__(path=path)
         self.file_1_value = file_1_value
         self.status = DIFFERENCE.KEY_NOT_IN_FILE_0
 
 
-class KeyNotInFile1(object):
+class KeyNotInFile1(AbstractDifference):
     def __init__(self, path: str, file_0_value: Any):
-        self.path = path
+        super().__init__(path=path)
         self.file_0_value = file_0_value
         self.status = DIFFERENCE.KEY_NOT_IN_FILE_0
 
@@ -68,7 +74,7 @@ def data_diff(
     file_1 = file_data_1[0]
     data_1 = file_data_1[1]
 
-    diffs = OrderedDict()
+    diffs: OrderedDict[str, AbstractDifference] = OrderedDict()
 
     queue = [{"path": path, "key": ".", "value": data_0}]
 
@@ -101,13 +107,15 @@ def data_diff(
                         diffs[path] = DifferentValues(path, file_0_value=_data_0_value, file_1_value=_data_1_value)
                     c_0 = Counter(_data_0_value)
                     c_1 = Counter(_data_1_value)
-                    if c_0 == c_1:
-                        if _data_0_value != _data_1_value:
+                    if _data_0_value != _data_1_value:
+                        if c_0 == c_1:
                             diffs[path] = ArrayInDifferentSequence(
                                 path=path, file_0_array=_data_0_value, file_1_array=_data_1_value
                             )
-                    else:
-                        diffs[path] = DifferentValues(path=path, file_0_value=_data_0_value, file_1_value=_data_1_value)
+                        else:
+                            diffs[path] = DifferentValues(
+                                path=path, file_0_value=_data_0_value, file_1_value=_data_1_value
+                            )
                 else:
                     if _data_0_value != _data_1_value:
                         diffs[path] = DifferentValues(path=path, file_0_value=_data_0_value, file_1_value=_data_1_value)

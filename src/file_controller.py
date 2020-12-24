@@ -1,7 +1,8 @@
 import json
+from collections import OrderedDict
+
 import yaml
 from ruamel.yaml import YAML, add_constructor, resolver
-from collections import OrderedDict
 
 
 class FileController(object):

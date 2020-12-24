@@ -1,8 +1,9 @@
 from collections import OrderedDict
+
 import click
 
-from src.file_controller import FileController
 from src.data_diff import data_diff
+from src.file_controller import FileController
 
 
 @click.command()
