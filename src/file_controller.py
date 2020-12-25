@@ -14,6 +14,14 @@ class FileController(object):
         self.__data_1: OrderedDict = self.load_file(file=self.__file_1)
 
     @property
+    def file_0(self) -> str:
+        return self.__file_0
+
+    @property
+    def file_1(self) -> str:
+        return self.__file_1
+
+    @property
     def data_0(self) -> OrderedDict:
         return self.__data_0
 

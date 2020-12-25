@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 import click
 
-from src.data_diff import data_diff
+from src.data_diff import Comparer
 from src.file_controller import FileController
 
 
@@ -11,11 +11,14 @@ from src.file_controller import FileController
 def main(files: str):
     file_controller = FileController(file_0=files[0], file_1=files[1])
 
-    data_diff(
-        file_data_0=(files[0], file_controller.data_0),
-        file_data_1=(files[1], file_controller.data_1),
-        path="",
-    )
+    file_0 = file_controller.file_0
+    file_1 = file_controller.file_1
+    data_0 = file_controller.data_0
+    data_1 = file_controller.data_1
+
+    comparer = Comparer(file_0=file_0, file_1=file_1, data_0=data_0, data_1=data_1)
+    comparer()
+    diffs = comparer()
 
 
 if __name__ == "__main__":
