@@ -31,11 +31,14 @@ $ ddiff --help
 Usage: ddiff [OPTIONS] FILES...
 
 Options:
-  -s, --steps BOOLEAN        print results in steps
-  -i, --indent_size INTEGER  indentation size
-  -l, --line_separator TEXT  line separator
-  -d, --debug BOOLEAN        run in debug mode
-  --help                     Show this message and exit.
+  -s, --steps BOOLEAN             print results in steps
+  -i, --indent_size INTEGER       indentation size
+  -l, --line_separator TEXT       line separator
+  -o, --output_filepath TEXT      output file path
+  -f, --output_format [default|json|yaml]
+                                  output format
+  -d, --debug BOOLEAN             run in debug mode
+  --help                          Show this message and exit.
 ```
 
 You can find [example json files and yaml files](https://github.com/shibuiwilliam/ddiff/tree/main/examples) to compare to see their differences.
