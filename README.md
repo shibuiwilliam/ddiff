@@ -8,6 +8,10 @@ A diff tool for structured data, such as json and yaml.
 `ddiff` is a tool to compare keys and values in structured data files, such as json and yaml.
 It compares key existence, value, value type and array sequence. It is aimed to filter difference of structured data, rather than texts in the file, to support finding actual changes in the original file and the changed file.
 
+## Requirement
+
+- Python >= 3.8
+
 ## Installation
 You can install `ddiff` as a Python cli tool.
 
@@ -35,6 +39,7 @@ Options:
 ```
 
 You can find [example json files and yaml files](https://github.com/shibuiwilliam/ddiff/tree/main/examples) to compare to see their differences.
+Comparison of [examples/original.json](./examples/original.json) and [examples/comparer.json](./examples/comparer.json):
 
 ```sh
 # example difference in json files
