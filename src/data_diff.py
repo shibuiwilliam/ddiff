@@ -1,6 +1,6 @@
 from collections import Counter, OrderedDict
 from enum import Enum
-from typing import Any, Dict, List, Tuple, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 class DIFFERENCE(Enum):
@@ -110,9 +110,7 @@ class Comparer(object):
                         _data_c = _data_c[p]
                     else:
                         if _path not in self.__diffs.keys():
-                            self.__diffs[_path] = KeyNotInFile1(
-                                path=_path, file_0=self.file_0, file_1=self.file_1, file_0_value=_data_o_value
-                            )
+                            self.__diffs[_path] = KeyNotInFile1(path=_path, file_0=self.file_0, file_1=self.file_1, file_0_value=_data_o_value)
                 if type(_data_o_value) != type(_data_c):
                     self.__diffs[path] = DifferentTypes(
                         path=path,
