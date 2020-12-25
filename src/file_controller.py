@@ -6,28 +6,32 @@ from ruamel.yaml import YAML, add_constructor, resolver
 
 
 class FileController(object):
-    def __init__(self, file_0: str, file_1: str):
-        self.__file_0: str = file_0
-        self.__file_1: str = file_1
+    def __init__(
+        self,
+        file_o: str,
+        file_c: str,
+    ):
+        self.__file_o: str = file_o
+        self.__file_c: str = file_c
 
-        self.__data_0: OrderedDict = self.load_file(file=self.__file_0)
-        self.__data_1: OrderedDict = self.load_file(file=self.__file_1)
-
-    @property
-    def file_0(self) -> str:
-        return self.__file_0
-
-    @property
-    def file_1(self) -> str:
-        return self.__file_1
+        self.__data_o: OrderedDict = self.load_file(file=self.__file_o)
+        self.__data_c: OrderedDict = self.load_file(file=self.__file_c)
 
     @property
-    def data_0(self) -> OrderedDict:
-        return self.__data_0
+    def file_o(self) -> str:
+        return self.__file_o
 
     @property
-    def data_1(self) -> OrderedDict:
-        return self.__data_1
+    def file_c(self) -> str:
+        return self.__file_c
+
+    @property
+    def data_o(self) -> OrderedDict:
+        return self.__data_o
+
+    @property
+    def data_c(self) -> OrderedDict:
+        return self.__data_c
 
     def load_file(self, file: str) -> OrderedDict:
         if self.__is_yaml(file=file):
