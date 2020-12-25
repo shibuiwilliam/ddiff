@@ -2,3 +2,6 @@
 build
 coverage
 .mypy_cache/*
+package-lock.json
+.prettierrc.json
+.venv/*
