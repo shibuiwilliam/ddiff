@@ -2,9 +2,9 @@ from collections import OrderedDict
 
 import click
 
-from src.data_diff import Comparer
-from src.file_controller import FileController
-from src.configurations import Configurations
+from ddiff.configurations import Configurations
+from ddiff.data_diff import Comparer
+from ddiff.file_controller import FileController
 
 
 @click.command()

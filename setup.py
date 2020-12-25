@@ -32,7 +32,7 @@ setup(
     keywords="ddiff",
     entry_points={
         "console_scripts": [
-            "ddiff=main:main",
+            "ddiff=ddiff.main:main",
         ],
     },
     classifiers=[

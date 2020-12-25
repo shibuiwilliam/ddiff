@@ -1,11 +1,12 @@
-from collections import Counter, OrderedDict
-from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple, Union, Callable
-from abc import ABCMeta, abstractmethod
 import random
 import string
 import uuid
-from src.configurations import Configurations
+from abc import ABCMeta, abstractmethod
+from collections import Counter, OrderedDict
+from enum import Enum
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
+from ddiff.configurations import Configurations
 
 
 def print_decorator() -> Callable:

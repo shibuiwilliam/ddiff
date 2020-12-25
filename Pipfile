@@ -20,7 +20,7 @@ python_version = "3.8"
 [scripts]
 lint = "black --check --diff --line-length 160 ."
 fmt = "sh -c 'isort . && black --line-length 160 .'"
-vet = "mypy ."
+vet = "mypy src/"
 
 [pipenv]
 allow_prereleases = true
