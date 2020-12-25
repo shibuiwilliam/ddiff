@@ -17,10 +17,12 @@ sync:
 .PHONY: fmt
 fmt:
 	pipenv run fmt
+	npx prettier --write .
 
 .PHONY: lint
 lint:
 	pipenv run lint
+	npx prettier --check .
 
 .PHONY: vet
 vet:
