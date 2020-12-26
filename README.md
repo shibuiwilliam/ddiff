@@ -46,74 +46,79 @@ Comparison of [examples/original.json](./examples/original.json) and [examples/c
 
 ```sh
 # example difference in json files
-$ ddiff examples/original.json examples/comparer.json -s True
+$ python -m ddiff.main ../examples/original.yaml ../examples/comparer.yaml -s True
 -------
 x
 - different values
-    examples/original.json: ['c', 'a', 1]
-    examples/comparer.json: ['c', 'a', 1, 2]
+    ../examples/original.yaml: ['c', 'a', 1]
+    ../examples/comparer.yaml: ['c', 'a', 1, 2]
 -------
 y
 - array in different sequence
-    examples/original.json: [3, 2, 1]
-    examples/comparer.json: [1, 2, 3]
+    ../examples/original.yaml: [3, 2, 1]
+    ../examples/comparer.yaml: [1, 2, 3]
 -------
 z
 - different values
-    examples/original.json: [3, 2, 1]
-    examples/comparer.json: [3, 2, '1']
+    ../examples/original.yaml: [3, 2, 1]
+    ../examples/comparer.yaml: [3, 2, '1']
 -------
 aa
 - different types
-    examples/original.json: CommentedSeq
-    examples/comparer.json: int
+    ../examples/original.yaml: CommentedSeq
+    ../examples/comparer.yaml: int
 -------
 bb
 - different types
-    examples/original.json: int
-    examples/comparer.json: str
+    ../examples/original.yaml: int
+    ../examples/comparer.yaml: str
+-------
+cc
+- different types
+    ../examples/original.yaml: ScalarFloat
+    ../examples/comparer.yaml: int
 -------
 e
 - different values
-    examples/original.json: 11
-    examples/comparer.json: 12
+    ../examples/original.yaml: 11
+    ../examples/comparer.yaml: 12
 -------
 c
 └─b
-- key not in examples/original.json
-    examples/original.json: null
-    examples/comparer.json: 2
+- key not in ../examples/original.yaml
+    ../examples/original.yaml: null
+    ../examples/comparer.yaml: 2
 -------
 d
 └─e
   └─f
-- key not in examples/comparer.json
-    examples/comparer.json: null
-    examples/original.json: 0
+- key not in ../examples/comparer.yaml
+    ../examples/original.yaml: 0
+    ../examples/comparer.yaml: null
 -------
 d
 └─e
   └─e
-- key not in examples/original.json
-    examples/original.json: null
-    examples/comparer.json: 1
+- key not in ../examples/original.yaml
+    ../examples/original.yaml: null
+    ../examples/comparer.yaml: 1
 -------
 d
 └─e
   └─d
     └─m
 - different values
-    examples/original.json: 0
-    examples/comparer.json: 1
+    ../examples/original.yaml: 0
+    ../examples/comparer.yaml: 1
 -------
 d
 └─e
   └─g
     └─h
       └─h
-- key not in examples/comparer.json
-    examples/comparer.json: null
-    examples/original.json: 11
+- key not in ../examples/comparer.yaml
+    ../examples/original.yaml: 11
+    ../examples/comparer.yaml: null
 -------
 d
 └─e
@@ -121,6 +126,6 @@ d
     └─h
       └─j
 - different values
-    examples/original.json: 12
-    examples/comparer.json: 11
+    ../examples/original.yaml: 12
+    ../examples/comparer.yaml: 11
 ```
