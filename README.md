@@ -129,3 +129,179 @@ d
     examples/original.yaml: 12
     examples/comparer.yaml: 11
 ```
+
+
+You can print the differences in json format:
+
+```sh
+$ ddiff examples/original.yaml examples/comparer.yaml -s True  -f json
+{
+    "x": {
+        "status": "different values",
+        "examples/original.yaml": [
+            "c",
+            "a",
+            1
+        ],
+        "examples/comparer.yaml": [
+            "c",
+            "a",
+            1,
+            2
+        ]
+    },
+    "y": {
+        "status": "array in different sequence",
+        "examples/original.yaml": [
+            3,
+            2,
+            1
+        ],
+        "examples/comparer.yaml": [
+            1,
+            2,
+            3
+        ]
+    },
+    "z": {
+        "status": "different values",
+        "examples/original.yaml": [
+            3,
+            2,
+            1
+        ],
+        "examples/comparer.yaml": [
+            3,
+            2,
+            "1"
+        ]
+    },
+    "aa": {
+        "status": "different types",
+        "examples/original.yaml": "CommentedSeq",
+        "examples/comparer.yaml": "int"
+    },
+    "bb": {
+        "status": "different types",
+        "examples/original.yaml": "int",
+        "examples/comparer.yaml": "str"
+    },
+    "cc": {
+        "status": "different types",
+        "examples/original.yaml": "ScalarFloat",
+        "examples/comparer.yaml": "int"
+    },
+    "d.e.d.m": {
+        "status": "different values",
+        "examples/original.yaml": 0,
+        "examples/comparer.yaml": 1
+    },
+    "d.e.f": {
+        "status": "key not in examples/comparer.yaml",
+        "examples/original.yaml": 0,
+        "examples/comparer.yaml": null
+    },
+    "d.e.g.h.j": {
+        "status": "different values",
+        "examples/original.yaml": 12,
+        "examples/comparer.yaml": 11
+    },
+    "d.e.g.h.h": {
+        "status": "key not in examples/comparer.yaml",
+        "examples/original.yaml": 11,
+        "examples/comparer.yaml": null
+    },
+    "e": {
+        "status": "different values",
+        "examples/original.yaml": 11,
+        "examples/comparer.yaml": 12
+    },
+    "c.b": {
+        "status": "key not in examples/original.yaml",
+        "examples/comparer.yaml": 2,
+        "examples/original.yaml": null
+    },
+    "d.e.e": {
+        "status": "key not in examples/original.yaml",
+        "examples/comparer.yaml": 1,
+        "examples/original.yaml": null
+    }
+}
+```
+
+Of course in yaml:
+
+```sh
+$ ddiff examples/original.yaml examples/comparer.yaml -s True  -f yaml
+aa:
+  examples/comparer.yaml: int
+  examples/original.yaml: CommentedSeq
+  status: different types
+bb:
+  examples/comparer.yaml: str
+  examples/original.yaml: int
+  status: different types
+c.b:
+  examples/comparer.yaml: 2
+  examples/original.yaml: null
+  status: key not in examples/original.yaml
+cc:
+  examples/comparer.yaml: int
+  examples/original.yaml: ScalarFloat
+  status: different types
+d.e.d.m:
+  examples/comparer.yaml: 1
+  examples/original.yaml: 0
+  status: different values
+d.e.e:
+  examples/comparer.yaml: 1
+  examples/original.yaml: null
+  status: key not in examples/original.yaml
+d.e.f:
+  examples/comparer.yaml: null
+  examples/original.yaml: 0
+  status: key not in examples/comparer.yaml
+d.e.g.h.h:
+  examples/comparer.yaml: null
+  examples/original.yaml: 11
+  status: key not in examples/comparer.yaml
+d.e.g.h.j:
+  examples/comparer.yaml: 11
+  examples/original.yaml: 12
+  status: different values
+e:
+  examples/comparer.yaml: 12
+  examples/original.yaml: 11
+  status: different values
+x:
+  examples/comparer.yaml:
+  - c
+  - a
+  - 1
+  - 2
+  examples/original.yaml:
+  - c
+  - a
+  - 1
+  status: different values
+y:
+  examples/comparer.yaml:
+  - 1
+  - 2
+  - 3
+  examples/original.yaml:
+  - 3
+  - 2
+  - 1
+  status: array in different sequence
+z:
+  examples/comparer.yaml:
+  - 3
+  - 2
+  - '1'
+  examples/original.yaml:
+  - 3
+  - 2
+  - 1
+  status: different values
+```
