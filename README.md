@@ -45,80 +45,80 @@ You can find [example json files and yaml files](https://github.com/shibuiwillia
 Comparison of [examples/original.json](./examples/original.json) and [examples/comparer.json](./examples/comparer.json):
 
 ```sh
-# example difference in json files
-$ python -m ddiff.main ../examples/original.yaml ../examples/comparer.yaml -s True
+# example difference in yaml files
+$ ddiff examples/original.yaml examples/comparer.yaml -s True
 -------
 x
 - different values
-    ../examples/original.yaml: ['c', 'a', 1]
-    ../examples/comparer.yaml: ['c', 'a', 1, 2]
+    examples/original.yaml: ['c', 'a', 1]
+    examples/comparer.yaml: ['c', 'a', 1, 2]
 -------
 y
 - array in different sequence
-    ../examples/original.yaml: [3, 2, 1]
-    ../examples/comparer.yaml: [1, 2, 3]
+    examples/original.yaml: [3, 2, 1]
+    examples/comparer.yaml: [1, 2, 3]
 -------
 z
 - different values
-    ../examples/original.yaml: [3, 2, 1]
-    ../examples/comparer.yaml: [3, 2, '1']
+    examples/original.yaml: [3, 2, 1]
+    examples/comparer.yaml: [3, 2, '1']
 -------
 aa
 - different types
-    ../examples/original.yaml: CommentedSeq
-    ../examples/comparer.yaml: int
+    examples/original.yaml: CommentedSeq
+    examples/comparer.yaml: int
 -------
 bb
 - different types
-    ../examples/original.yaml: int
-    ../examples/comparer.yaml: str
+    examples/original.yaml: int
+    examples/comparer.yaml: str
 -------
 cc
 - different types
-    ../examples/original.yaml: ScalarFloat
-    ../examples/comparer.yaml: int
+    examples/original.yaml: ScalarFloat
+    examples/comparer.yaml: int
 -------
 e
 - different values
-    ../examples/original.yaml: 11
-    ../examples/comparer.yaml: 12
+    examples/original.yaml: 11
+    examples/comparer.yaml: 12
 -------
 c
 └─b
-- key not in ../examples/original.yaml
-    ../examples/original.yaml: null
-    ../examples/comparer.yaml: 2
+- key not in examples/original.yaml
+    examples/original.yaml: null
+    examples/comparer.yaml: 2
 -------
 d
 └─e
   └─f
-- key not in ../examples/comparer.yaml
-    ../examples/original.yaml: 0
-    ../examples/comparer.yaml: null
+- key not in examples/comparer.yaml
+    examples/original.yaml: 0
+    examples/comparer.yaml: null
 -------
 d
 └─e
   └─e
-- key not in ../examples/original.yaml
-    ../examples/original.yaml: null
-    ../examples/comparer.yaml: 1
+- key not in examples/original.yaml
+    examples/original.yaml: null
+    examples/comparer.yaml: 1
 -------
 d
 └─e
   └─d
     └─m
 - different values
-    ../examples/original.yaml: 0
-    ../examples/comparer.yaml: 1
+    examples/original.yaml: 0
+    examples/comparer.yaml: 1
 -------
 d
 └─e
   └─g
     └─h
       └─h
-- key not in ../examples/comparer.yaml
-    ../examples/original.yaml: 11
-    ../examples/comparer.yaml: null
+- key not in examples/comparer.yaml
+    examples/original.yaml: 11
+    examples/comparer.yaml: null
 -------
 d
 └─e
@@ -126,6 +126,6 @@ d
     └─h
       └─j
 - different values
-    ../examples/original.yaml: 12
-    ../examples/comparer.yaml: 11
+    examples/original.yaml: 12
+    examples/comparer.yaml: 11
 ```
