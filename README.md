@@ -13,7 +13,13 @@ It compares key existence, value, value type and array sequence. It is aimed to 
 
 ## Installation
 
-You can install `ddiff` as a Python cli tool.
+You can install from [pypi](https://pypi.org/project/ddiff/) package.
+
+```sh
+$ pip install ddiff
+```
+
+You can also install `ddiff` as a Python cli tool.
 
 ```sh
 $ git clone git@github.com:shibuiwilliam/ddiff.git
