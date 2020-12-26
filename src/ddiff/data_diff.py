@@ -3,13 +3,25 @@ import pprint
 from abc import ABCMeta, abstractmethod
 from collections import Counter, OrderedDict
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Union
 
 import ruamel.yaml
 import yaml
 
 from ddiff.configurations import OUTPUT_FORMAT, Configurations
-from ddiff.utils import print_decorator, random_separator
+from ddiff.utils import FONT_STYLES, print_decorator, random_separator
+
+
+def print_path_in_style(path: str):
+    print(f"{FONT_STYLES.GREEN}{path}{FONT_STYLES.RESET}")
+
+
+def print_diff_status_in_style(diff: str):
+    print(f"{FONT_STYLES.YELLOW}- {diff}{FONT_STYLES.RESET}")
+
+
+def print_comparison_in_style(key: str, value: str):
+    print(f"{Configurations.indent()}{key}: {FONT_STYLES.MAGENTA}{value}{FONT_STYLES.RESET}")
 
 
 class DIFFERENCE(Enum):
@@ -29,7 +41,7 @@ class AbstractDifference(metaclass=ABCMeta):
 
     @abstractmethod
     def pretty_print(self):
-        print(f"- {self.status.value}")
+        print_diff_status_in_style(diff=self.status.value)
 
     @abstractmethod
     def values(self) -> Dict[str, Union[str, List, None]]:
@@ -61,8 +73,8 @@ class DifferentTypes(AbstractDifference):
 
     def pretty_print(self):
         super(DifferentTypes, self).pretty_print()
-        print(f"{Configurations.indent()}{self.file_o}: {self.file_o_type}")
-        print(f"{Configurations.indent()}{self.file_c}: {self.file_c_type}")
+        print_comparison_in_style(key=self.file_o, value=self.file_o_type)
+        print_comparison_in_style(key=self.file_c, value=self.file_c_type)
 
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
@@ -89,8 +101,8 @@ class DifferentValues(AbstractDifference):
 
     def pretty_print(self):
         super(DifferentValues, self).pretty_print()
-        print(f"{Configurations.indent()}{self.file_o}: {self.file_o_value}")
-        print(f"{Configurations.indent()}{self.file_c}: {self.file_c_value}")
+        print_comparison_in_style(key=self.file_o, value=self.file_o_value)
+        print_comparison_in_style(key=self.file_c, value=self.file_c_value)
 
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
@@ -117,8 +129,8 @@ class ArrayInDifferentSequence(AbstractDifference):
 
     def pretty_print(self):
         super(ArrayInDifferentSequence, self).pretty_print()
-        print(f"{Configurations.indent()}{self.file_o}: {self.file_o_array}")
-        print(f"{Configurations.indent()}{self.file_c}: {self.file_c_array}")
+        print_comparison_in_style(key=self.file_o, value=self.file_o_array)
+        print_comparison_in_style(key=self.file_c, value=self.file_c_array)
 
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
@@ -136,15 +148,22 @@ class KeyNotInFile(AbstractDifference):
         file_o: str,
         file_c: str,
         file_o_value: Any,
+        reverse: bool = False,
     ):
         super().__init__(path=path, depth=depth, file_o=file_o, file_c=file_c)
         self.file_o_value: Any = file_o_value
+        self.reverse = reverse
         self.status: DIFFERENCE = DIFFERENCE.KEY_NOT_IN_FILE
 
     def pretty_print(self):
-        print(f"- {self.status.value.format(self.file_c)}")
-        print(f"{Configurations.indent()}{self.file_c}: null")
-        print(f"{Configurations.indent()}{self.file_o}: {self.file_o_value}")
+        if self.reverse:
+            print_diff_status_in_style(diff=self.status.value.format(self.file_c))
+            print_comparison_in_style(key=self.file_c, value="null")
+            print_comparison_in_style(key=self.file_o, value=self.file_o_value)
+        else:
+            print_diff_status_in_style(diff=self.status.value.format(self.file_c))
+            print_comparison_in_style(key=self.file_o, value=self.file_o_value)
+            print_comparison_in_style(key=self.file_c, value="null")
 
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
@@ -223,7 +242,7 @@ class Ddiff(object):
             else:
                 _path = diff.path.replace(self.separator, ".")
                 _path = _path[1:]
-            print(_path)
+            print_path_in_style(path=_path)
             diff.pretty_print()
 
     @print_decorator()
@@ -322,6 +341,7 @@ class Ddiff(object):
         data_o: Dict,
         data_c: Dict,
         depth: int = 0,
+        reverse: bool = False,
     ):
         for key, _data_o in data_o.items():
             _path = f"{path}{self.separator}{key}"
@@ -333,6 +353,7 @@ class Ddiff(object):
                     data_c=data_c[key],
                     path=_path,
                     depth=depth + 1,
+                    reverse=reverse,
                 )
             else:
                 self.add_diff(
@@ -343,6 +364,7 @@ class Ddiff(object):
                         file_o=file_o,
                         file_c=file_c,
                         file_o_value=_data_o,
+                        reverse=reverse,
                     ),
                 )
 
@@ -355,6 +377,7 @@ class Ddiff(object):
         data_c: Any,
         path: str = "",
         depth: int = 0,
+        reverse: bool = False,
     ) -> None:
         if isinstance(data_o, OrderedDict):
             same = self._compare_types(
@@ -374,6 +397,7 @@ class Ddiff(object):
                 data_o=data_o,
                 data_c=data_c,
                 depth=depth,
+                reverse=reverse,
             )
         else:
             same = self._compare_types(
@@ -429,6 +453,7 @@ class Ddiff(object):
             data_c=self.data_c,
             path="",
             depth=0,
+            reverse=False,
         )
         self._ddiff(
             file_o=self.file_c,
@@ -437,4 +462,5 @@ class Ddiff(object):
             data_c=self.data_o,
             path="",
             depth=0,
+            reverse=True,
         )
