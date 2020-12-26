@@ -1,9 +1,9 @@
+import codecs
 import json
 import os
 from collections import OrderedDict
 from typing import Dict
 
-import ruamel.yaml
 import yaml
 from ruamel.yaml import YAML, add_constructor, resolver
 
@@ -76,19 +76,15 @@ class FileLoader(object):
         raise Exception("File must be a yaml or json")
 
     def __is_yaml(self, file: str) -> bool:
-        try:
-            with open(file, "r", encoding="utf-8") as f:
-                yaml.safe_load(f)
+        if file.endswith(".yaml") or file.endswith(".yml"):
             return True
-        except yaml.YAMLError as _:
+        else:
             return False
 
     def __is_json(self, file: str) -> bool:
-        try:
-            with open(file, "r", encoding="utf-8") as f:
-                json.loads(f)
+        if file.endswith(".json"):
             return True
-        except json.JSONDecodeError as _:
+        else:
             return False
 
     def __load_yaml(self, file: str) -> OrderedDict:

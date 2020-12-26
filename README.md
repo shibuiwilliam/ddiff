@@ -130,7 +130,6 @@ d
     examples/comparer.yaml: 11
 ```
 
-
 You can print the differences in json format:
 
 ```sh
