@@ -6,10 +6,17 @@ from typing import Callable
 from ddiff.configurations import Configurations
 
 
+def random_phrase(n=32) -> str:
+    if Configurations.debug:
+        return "."
+    phrase = "".join(random.choices(string.ascii_letters + string.digits, k=n))
+    return phrase
+
+
 def random_separator(n=32) -> str:
     if Configurations.debug:
         return "."
-    _sep = "".join(random.choices(string.ascii_letters + string.digits, k=n))
+    _sep = random_phrase(n=n)
     return f"<{_sep}>"
 
 

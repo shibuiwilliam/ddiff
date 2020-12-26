@@ -1,11 +1,46 @@
 import json
+import os
 from collections import OrderedDict
+from typing import Dict
 
+import ruamel.yaml
 import yaml
 from ruamel.yaml import YAML, add_constructor, resolver
 
+from ddiff.utils import random_phrase
 
-class FileController(object):
+
+def export_to_yaml(output_filepath: str, dict_diff: Dict):
+    if output_filepath.endswith("/"):
+        basename = random_phrase(n=6)
+        filename = f"{basename}.yaml"
+        filepath = os.path.join(output_filepath, filename)
+    elif not output_filepath.endswith(".yaml") and not output_filepath.endswith(".yml"):
+        raise ValueError("Output filepath must be directory or must have yaml extension")
+    else:
+        filepath = output_filepath
+
+    with open(filepath, "w") as f:
+        yaml.dump(dict_diff, f)
+    print(f"exported diffs as yaml to {filepath}")
+
+
+def export_to_json(output_filepath: str, dict_diff: OrderedDict):
+    if output_filepath.endswith("/"):
+        basename = random_phrase(n=6)
+        filename = f"{basename}.json"
+        filepath = os.path.join(output_filepath, filename)
+    elif not output_filepath.endswith(".json"):
+        raise ValueError("Output filepath must be directory or must have json extension")
+    else:
+        filepath = output_filepath
+
+    with open(filepath, "w") as f:
+        json.dump(dict_diff, f, indent=4)
+    print(f"exported diffs as json to {filepath}")
+
+
+class FileLoader(object):
     def __init__(
         self,
         file_o: str,

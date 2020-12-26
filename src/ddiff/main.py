@@ -1,13 +1,14 @@
 from collections import OrderedDict
+from typing import Union
 
 import click
 
 from ddiff.configurations import OUTPUT_FORMAT, Configurations
 from ddiff.data_diff import Ddiff
-from ddiff.file_controller import FileController
+from ddiff.file_controller import FileLoader, export_to_json, export_to_yaml
 
 
-@click.command()
+@click.command(name="ddiff")
 @click.argument(
     "files",
     nargs=2,
@@ -68,12 +69,12 @@ def main(
     Configurations.indent_size = indent_size
     Configurations.line_separator = line_separator
     Configurations.debug = debug
-    file_controller = FileController(file_o=files[0], file_c=files[1])
+    file_loader = FileLoader(file_o=files[0], file_c=files[1])
 
-    file_o = file_controller.file_o
-    file_c = file_controller.file_c
-    data_o = file_controller.data_o
-    data_c = file_controller.data_c
+    file_o = file_loader.file_o
+    file_c = file_loader.file_c
+    data_o = file_loader.data_o
+    data_c = file_loader.data_c
 
     if output_format == OUTPUT_FORMAT.DEFAULT.value:
         _output_format = OUTPUT_FORMAT.DEFAULT
@@ -94,6 +95,16 @@ def main(
     )
     ddiff()
     ddiff.pretty_print()
+
+    if output_filepath:
+        if _output_format == OUTPUT_FORMAT.DEFAULT:
+            raise ValueError("output_format must be yaml or json to export diffs to a file")
+        odict_diff = ddiff.diffs_to_dict()
+        dict_diff = dict(odict_diff)
+        if _output_format == OUTPUT_FORMAT.JSON:
+            export_to_json(output_filepath=output_filepath, dict_diff=dict_diff)
+        if _output_format == OUTPUT_FORMAT.YAML:
+            export_to_yaml(output_filepath=output_filepath, dict_diff=dict_diff)
 
 
 if __name__ == "__main__":

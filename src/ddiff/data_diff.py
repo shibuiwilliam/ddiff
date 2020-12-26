@@ -6,6 +6,7 @@ from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import ruamel.yaml
+import yaml
 
 from ddiff.configurations import OUTPUT_FORMAT, Configurations
 from ddiff.utils import print_decorator, random_separator
@@ -33,7 +34,7 @@ class AbstractDifference(metaclass=ABCMeta):
     @abstractmethod
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
-            "status": self.status.__class__.__name__,
+            "status": self.status.value,
             self.file_o: "",
             self.file_c: "",
         }
@@ -65,7 +66,7 @@ class DifferentTypes(AbstractDifference):
 
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
-            "status": self.status.__class__.__name__,
+            "status": self.status.value,
             self.file_o: self.file_o_type,
             self.file_c: self.file_c_type,
         }
@@ -93,7 +94,7 @@ class DifferentValues(AbstractDifference):
 
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
-            "status": self.status.__class__.__name__,
+            "status": self.status.value,
             self.file_o: self.file_o_value,
             self.file_c: self.file_c_value,
         }
@@ -121,7 +122,7 @@ class ArrayInDifferentSequence(AbstractDifference):
 
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
-            "status": self.status.__class__.__name__,
+            "status": self.status.value,
             self.file_o: self.file_o_array,
             self.file_c: self.file_c_array,
         }
@@ -147,7 +148,7 @@ class KeyNotInFile(AbstractDifference):
 
     def values(self) -> Dict[str, Union[str, List, None]]:
         return {
-            "status": self.status.__class__.__name__,
+            "status": self.status.value.format(self.file_c),
             self.file_o: self.file_o_value,
             self.file_c: None,
         }
@@ -201,14 +202,8 @@ class Ddiff(object):
             self.default_pretty_print()
         elif self.output_format == OUTPUT_FORMAT.YAML:
             odict_diff = self.diffs_to_dict()
-            res = ""
-            for line in ruamel.yaml.round_trip_dump(
-                odict_diff,
-                indent=Configurations.indent_size,
-                block_seq_indent=3,
-            ).splitlines(True):
-                res += line[3:]
-            print(res)
+            dict_diff = dict(odict_diff)
+            print(yaml.dump(dict_diff))
         elif self.output_format == OUTPUT_FORMAT.JSON:
             odict_diff = self.diffs_to_dict()
             dict_diff = dict(odict_diff)
@@ -398,8 +393,8 @@ class Ddiff(object):
                             path=path,
                             file_o=file_o,
                             file_c=file_c,
-                            data_o=data_o,
-                            data_c=data_c,
+                            data_o=list(data_o),
+                            data_c=list(data_c),
                             depth=depth,
                         )
                         if not same:
@@ -408,8 +403,8 @@ class Ddiff(object):
                             path=path,
                             file_o=file_o,
                             file_c=file_c,
-                            data_o=data_o,
-                            data_c=data_c,
+                            data_o=list(data_o),
+                            data_c=list(data_c),
                             depth=depth,
                         )
                         if not same:
